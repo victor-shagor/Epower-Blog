@@ -6,17 +6,21 @@ import NavBar from "../components/navBar";
 
 function PostDetail(props) {
   const [post, setPost] = useState();
+  const [postLoading, setPostLoading] = useState(false);
   let { id } = useParams();
 
   useEffect(() => {
     (async () => {
+      setPostLoading(true);
       const { status, data } = await postServices.singlePost(id);
       if (status === 200 && data) setPost(data);
+      setPostLoading(false);
     })();
   }, []);
 
   return (
-    <div>
+    <div style={{ minHeight: "100vh" }}>
+      {postLoading && <p>Loading...</p>}
       {post && (
         <NavBar
           title={post.title.rendered}
